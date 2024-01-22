@@ -13,6 +13,10 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     firstName = Column(String, index=True)
     lastName = Column(String, index=True)
+    age = Column(Integer)
+    phoneNumber = Column(String)
+    email = Column(String)
+    password = Column(String)
 
 engine = create_engine(DATABASE_URL)
 Base.metadata.create_all(bind=engine)
@@ -42,10 +46,14 @@ app.add_middleware(
 class UserCreate(BaseModel):
     firstName: str
     lastName: str
+    age: int
+    phoneNumber: str
+    email: str
+    password: str
 
 @app.post("/users/", response_model=UserCreate)
 async def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    new_user = User(**user.dict())
+    new_user = User(**user.model_dump())
     db.add(new_user)
     db.commit()
     db.refresh(new_user)

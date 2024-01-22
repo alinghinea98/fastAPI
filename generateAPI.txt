@@ -1,0 +1,5 @@
+# Install Swagger Codegen
+npm install -g @openapitools/openapi-generator-cli
+
+# Generate Angular API client
+npx @openapitools/openapi-generator-cli generate -i http://127.0.0.1:8000/openapi.json -g typescript-angular -o ./angular-client
